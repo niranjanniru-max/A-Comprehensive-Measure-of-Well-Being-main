@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>HDI Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>🌍 HDI Predictor</h1>
+        <p>Human Development Index Prediction System</p>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="info-cards">
+        <div class="info-card very-high-card">
+            <span class="tier-dot very-high-dot"></span>
+            <strong>Very High</strong><br/>HDI ≥ 0.800
+        </div>
+        <div class="info-card high-card">
+            <span class="tier-dot high-dot"></span>
+            <strong>High</strong><br/>HDI 0.700–0.799
+        </div>
+        <div class="info-card medium-card">
+            <span class="tier-dot medium-dot"></span>
+            <strong>Medium</strong><br/>HDI 0.550–0.699
+        </div>
+        <div class="info-card low-card">
+            <span class="tier-dot low-dot"></span>
+            <strong>Low</strong><br/>HDI &lt; 0.550
+        </div>
+    </div>
+
+    <!-- Error Message -->
+    {% if error %}
+    <div class="error-box">
+        ⚠️ {{ error }}
+    </div>
+    {% endif %}
+
+    <!-- Prediction Form -->
+    <div class="form-card">
+        <h2>Enter Country Indicators</h2>
+        <p class="form-subtitle">Fill in the 2021 development indicators for your country</p>
+
+        <form action="/predict" method="POST">
+
+            <div class="form-group">
+                <label for="life_expectancy">
+                    🏥 Life Expectancy at Birth
+                    <span class="hint">(years, e.g. 72.5)</span>
+                </label>
+                <input type="number" id="life_expectancy" name="life_expectancy"
+                       step="0.1" min="20" max="90" placeholder="e.g. 72.5" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="mean_years_schooling">
+                    📚 Mean Years of Schooling
+                    <span class="hint">(years, e.g. 8.4)</span>
+                </label>
+                <input type="number" id="mean_years_schooling" name="mean_years_schooling"
+                       step="0.1" min="0" max="20" placeholder="e.g. 8.4" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="expected_years_schooling">
+                    🎓 Expected Years of Schooling
+                    <span class="hint">(years, e.g. 13.2)</span>
+                </label>
+                <input type="number" id="expected_years_schooling" name="expected_years_schooling"
+                       step="0.1" min="0" max="25" placeholder="e.g. 13.2" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="gni_per_capita">
+                    💰 GNI Per Capita (PPP $)
+                    <span class="hint">(e.g. 15000)</span>
+                </label>
+                <input type="number" id="gni_per_capita" name="gni_per_capita"
+                       step="1" min="100" max="200000" placeholder="e.g. 15000" required/>
+            </div>
+
+            <button type="submit" class="predict-btn">🔍 Predict HDI</button>
+
+        </form>
+    </div>
+
+    <!-- Example Scenarios -->
+    <div class="scenarios">
+        <h3>💡 Try These Example Scenarios</h3>
+        <div class="scenario-cards">
+            <div class="scenario-card" onclick="fillForm(82.4, 13.0, 18.2, 64660)">
+                <strong>🇳🇴 Norway-like</strong>
+                <small>Very High HDI</small>
+            </div>
+            <div class="scenario-card" onclick="fillForm(76.2, 10.5, 14.8, 18000)">
+                <strong>🇧🇷 Brazil-like</strong>
+                <small>High HDI</small>
+            </div>
+            <div class="scenario-card" onclick="fillForm(68.5, 6.8, 11.2, 6500)">
+                <strong>🇮🇳 India-like</strong>
+                <small>Medium HDI</small>
+            </div>
+            <div class="scenario-card" onclick="fillForm(54.3, 3.2, 7.5, 1800)">
+                <strong>🌍 Low HDI Country</strong>
+                <small>Low HDI</small>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function fillForm(le, mys, eys, gni) {
+    document.getElementById('life_expectancy').value = le;
+    document.getElementById('mean_years_schooling').value = mys;
+    document.getElementById('expected_years_schooling').value = eys;
+    document.getElementById('gni_per_capita').value = gni;
+}
+</script>
+
+</body>
+</html>
